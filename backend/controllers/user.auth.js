@@ -19,10 +19,11 @@ export const Signup = async (req, res) => {
     const boyProfile = `https://avatar.iran.liara.run/public/boy?username=${userName}`;
     const girlProfile = `https://avatar.iran.liara.run/public/girl?username=${userName}`;
 
+    const hash_password = await bcrypt.hash(password, 10);
     const newUser = await new User({
       fullName,
       userName,
-      password,
+      password: hash_password,
       gender,
       profilePic: gender === "male" ? boyProfile : girlProfile,
     });
@@ -30,17 +31,11 @@ export const Signup = async (req, res) => {
     newUser
       .save()
       .then((result) => {
-        res.status(201).json({
-          _id: newUser._id,
-          fullName: newUser.fullName,
-          userName: newUser.userName,
-          gender: newUser.gender,
-        });
+        res.redirect("/auth/login");
       })
       .catch((err) => {
         console.log(err);
       });
-    res.redirect("/auth/login");
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ error: "Internal server error" });
