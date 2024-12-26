@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { User } from "../models/user.auth.js";
+import { generateTokensAndSetCookies } from "../utils/generate_token.js";
 
 export const Signup = async (req, res) => {
   try {
@@ -20,6 +21,7 @@ export const Signup = async (req, res) => {
     const girlProfile = `https://avatar.iran.liara.run/public/girl?username=${userName}`;
 
     const hash_password = await bcrypt.hash(password, 10);
+
     const newUser = await new User({
       fullName,
       userName,
@@ -28,14 +30,25 @@ export const Signup = async (req, res) => {
       profilePic: gender === "male" ? boyProfile : girlProfile,
     });
 
-    newUser
-      .save()
-      .then((result) => {
-        res.redirect("/auth/login");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (newUser) {
+      newUser
+        .save()
+        .then((result) => {
+          generateTokensAndSetCookies(newUser._id, res);
+          res.status(201).json({
+            _id: newUser._id,
+            fullName: newUser.fullName,
+            userName: newUser.userName,
+            gender: newUser.gender,
+            profilePic: newUser.profilePic,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      res.status(500).json({ error: "Data invalid" });
+    }
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ error: "Internal server error" });
@@ -45,9 +58,9 @@ export const Signup = async (req, res) => {
 export const Login = async (req, res) => {
   try {
     const { userName, password } = req.body;
-    const user = User.findOne({ userName });
+    const user = await User.findOne({ userName });
     const isPassword = await bcrypt.compare(password, user.password || "");
-    if (!user && !isPassword) {
+    if (!user || !isPassword) {
       res.status(400).json({ error: "Invalid username or password" });
       console.log("Invalid password or username");
     }
@@ -61,5 +74,16 @@ export const Login = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Login internal error" });
+  }
+};
+
+export const Logout = async (req, res) => {
+  try {
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.json("Logged out");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Login internal error" });
   }
 };
