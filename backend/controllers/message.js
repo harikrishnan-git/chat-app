@@ -12,27 +12,32 @@ export const sendMsg = async (req, res) => {
       recieverId,
       message,
     });
-    msg.save().then((res) => {
-      const conv = Conversation.findOne({
-        participants: { $all: [senderId, recieverId] },
-      });
-      if (!conv) {
-        const con = new Conversation({
-          participants: [senderId, recieverId],
-          message: [msg._id],
-        });
-        con
-          .save()
-          .then(() => {
-            console.log("Conversation created");
-          })
-          .catch((err) => {
-            console.log("problem while creating conversation");
-          });
-      } else {
-        conv.message.push(msg._id);
-      }
+    msg.save();
+    const conv = await Conversation.findOne({
+      participants: { $all: [senderId, recieverId] },
     });
+    if (!conv) {
+      const con = new Conversation({
+        participants: [senderId, recieverId],
+        messages: [msg._id],
+      });
+      con
+        .save()
+        .then(() => {
+          console.log("Conversation created");
+        })
+        .catch((err) => {
+          console.log("problem while creating conversation");
+        });
+      res.send(con);
+      res.end();
+    } else {
+      conv.messages.push(msg._id);
+      conv.save().then(() => {
+        res.send(conv);
+        res.end();
+      });
+    }
   } catch (err) {
     console.log("error in controller of sendMsg", err.message);
     res.status(500).json({ error: "error while sending message" });
