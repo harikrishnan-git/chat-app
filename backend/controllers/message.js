@@ -5,8 +5,8 @@ import { Conversation } from "../models/communication.model.js";
 export const sendMsg = async (req, res) => {
   try {
     const { message } = req.body;
-    const senderId = req.params.id;
-    const recieverId = req.user._id;
+    const recieverId = req.params.id;
+    const senderId = req.user._id;
     const msg = new Message({
       senderId,
       recieverId,
@@ -41,5 +41,23 @@ export const sendMsg = async (req, res) => {
   } catch (err) {
     console.log("error in controller of sendMsg", err.message);
     res.status(500).json({ error: "error while sending message" });
+  }
+};
+
+export const getMsg = async (req, res) => {
+  let mess = [];
+  const otherId = req.params.id;
+  const thisId = req.user._id;
+  const conv = await Conversation.findOne({
+    participants: { $all: [otherId, thisId] },
+  }).populate("messages");
+  if (!conv) {
+    res.send("No messages found");
+  } else {
+    res.send(
+      conv.messages.map((data) => {
+        return data.message;
+      })
+    );
   }
 };
