@@ -46,7 +46,7 @@ export default function Login() {
             <input type="password" className="grow" placeholder="Password" />
           </label>
           <a
-            href="#"
+            href="../Signup/Signup.jsx"
             className="text-sm hover:underline hover:text-blue-500 inline-block mt-2"
           >
             Don't have an account?
