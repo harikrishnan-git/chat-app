@@ -1,7 +1,7 @@
 import React from "react";
-import SearchInput from "./Sidebar/SearchInput";
-import Conversations from "./Sidebar/Conversations";
-import Logout from "./Sidebar/Logout";
+import SearchInput from "./SearchInput";
+import Conversations from "./Conversations";
+import Logout from "./Logout";
 
 export default function Sidebar() {
   return (
