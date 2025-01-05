@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   return (
@@ -45,12 +46,14 @@ export default function Login() {
             </svg>
             <input type="password" className="grow" placeholder="Password" />
           </label>
-          <a
-            href="../Signup/Signup.jsx"
-            className="text-sm hover:underline hover:text-blue-500 inline-block mt-2"
-          >
-            Don't have an account?
-          </a>
+          <strong>
+            <Link
+              to="/signup"
+              className="text-sm link link-primary inline-block mt-2"
+            >
+              Don't have an account?
+            </Link>
+          </strong>
           <br />
           <input type="submit" className="btn btn-outline btn-primary" />
         </form>

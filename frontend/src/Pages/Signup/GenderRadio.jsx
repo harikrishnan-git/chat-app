@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function GenderCheckbox() {
+export default function GenderCheckbox({ inputs, setInputs }) {
   return (
     <div>
       <label htmlFor="Gender" className="label p-2 label-text mt-2">
@@ -12,6 +12,9 @@ export default function GenderCheckbox() {
             type="radio"
             id="Gender"
             name="radio-2"
+            onClick={() => {
+              setInputs({ ...inputs, Gender: "male" });
+            }}
             className="radio radio-primary hover:border-blue-300 "
             defaultChecked
           />
@@ -22,6 +25,9 @@ export default function GenderCheckbox() {
             type="radio"
             id="Gender"
             name="radio-2"
+            onClick={() => {
+              setInputs({ ...inputs, Gender: "female" });
+            }}
             className="radio radio-primary hover:border-blue-300 ml-6"
           />
           <span className="label-text m-1 ml-1">Female</span>

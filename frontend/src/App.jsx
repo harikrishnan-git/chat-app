@@ -3,13 +3,20 @@ import "./App.css";
 import Login from "./Pages/Login/Login";
 import Signup from "./Pages/Signup/Signup";
 import Home from "./Pages/Home/Home";
+import { Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <div className="p-4 h-screen flex items-center justify-center">
-      <Home></Home>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+      <Toaster />
     </div>
   );
 }
