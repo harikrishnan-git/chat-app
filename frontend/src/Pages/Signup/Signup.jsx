@@ -64,7 +64,7 @@ export default function Signup() {
             <i className="fa-solid fa-circle-user mr-3"></i>
             <input
               id="Password"
-              type="text"
+              type="password"
               placeholder="Enter password"
               value={inputs.Password}
               onChange={(e) => {
@@ -79,7 +79,7 @@ export default function Signup() {
             <i class="fa-solid fa-circle-user mr-3"></i>
             <input
               id="confirmPassword"
-              type="text"
+              type="password"
               placeholder="Reenter password"
               value={inputs.ConfirmPassword}
               onChange={(e) => {
