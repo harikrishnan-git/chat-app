@@ -8,7 +8,7 @@ export const Signup = async (req, res) => {
 
     if (password !== confirmPassword) {
       console.log("password variation");
-      res.status(500).send({ error: "Password doesn't match confirmation" });
+      res.status(500).json({ error: "Password doesn't match confirmation" });
     }
 
     const user = await User.findOne({ userName });
@@ -19,9 +19,7 @@ export const Signup = async (req, res) => {
 
     const boyProfile = `https://avatar.iran.liara.run/public/boy?username=${userName}`;
     const girlProfile = `https://avatar.iran.liara.run/public/girl?username=${userName}`;
-
     const hash_password = await bcrypt.hash(password, 10);
-
     const newUser = await new User({
       fullName,
       userName,
@@ -45,6 +43,7 @@ export const Signup = async (req, res) => {
         })
         .catch((err) => {
           console.log(err);
+          return res.status(500).json({ error: "Error while saving user" });
         });
     } else {
       res.status(500).json({ error: "Data invalid" });
