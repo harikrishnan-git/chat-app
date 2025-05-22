@@ -32,18 +32,28 @@ export const Signup = async (req, res) => {
       newUser
         .save()
         .then((result) => {
-          generateTokensAndSetCookies(newUser._id, res);
-          res.status(201).json({
-            _id: newUser._id,
-            fullName: newUser.fullName,
-            userName: newUser.userName,
-            gender: newUser.gender,
-            profilePic: newUser.profilePic,
-          });
+          try {
+            generateTokensAndSetCookies(result._id, res); // Use saved user's ID
+            res.status(201).json({
+              _id: result._id,
+              fullName: result.fullName,
+              userName: result.userName,
+              gender: result.gender,
+              profilePic: result.profilePic,
+            });
+          } catch (error) {
+            console.error(
+              "Error in token generation or setting cookies:",
+              error.message
+            );
+            return res.status(500).json({ error: "Token generation failed" });
+          }
         })
         .catch((err) => {
           console.log(err);
-          return res.status(500).json({ error: "Error while saving user" });
+          return res
+            .status(500)
+            .json({ error: "Error while saving user", details: err.message });
         });
     } else {
       res.status(500).json({ error: "Data invalid" });

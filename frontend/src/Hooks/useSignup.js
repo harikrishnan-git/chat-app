@@ -65,10 +65,11 @@ const handleInput = ({
   } else if (ConfirmPassword != Password) {
     toast.error("Passwords don't match!!");
     return false;
-  } else if (Password.length < 6) {
-    toast.error("Passwords must have atleast 6 characters");
-    return false;
   }
+  // else if (Password.length < 6) {
+  //   toast.error("Passwords must have atleast 6 characters");
+  //   return false;
+  // }
   return true;
 };
 

@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Conversations() {
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    axios
+      .get("/api/users")
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <div className="">
       <div className="flex">
