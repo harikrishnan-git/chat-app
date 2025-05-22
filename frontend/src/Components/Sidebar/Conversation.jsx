@@ -1,26 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function Conversations() {
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    axios
-      .get("/api/users")
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+export default function Conversation(data) {
   return (
     <div className="">
       <div className="flex">
         <div className="avatar online">
           <div className="w-12 rounded-full">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            <img src={data.data.profilePic} />
           </div>
         </div>
         <div className="flex flex-1 flex-col">
           <div className="flex gap-3 justify-between">
-            <p className="font-bold text-gray-200">John Doe</p>
-            <span className="text-base">🥀</span>
+            <p className="font-bold text-gray-200 mx-5 text-xl">
+              {data.data.fullName}
+            </p>
           </div>
         </div>
       </div>
