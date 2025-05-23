@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import useLogin from "../../Hooks/useLogin";
 
 export default function Login() {
+  const [userName, setUserName] = useState("");
+  const [passwd, setPasswd] = useState("");
+  const { loading, login } = useLogin();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await login(userName, passwd);
+  };
   return (
     <div className="flex flex-col items-center justify-center min-w-96 nx-auto">
       <div className="w-full p-6 shadow-md rounded-lg bg-gray-400 bg-clip-padding backdrop-blur-xl bg-opacity-0">
         <h1 className="text-3xl font-semibold text-center text-gray-300">
           LOGIN
         </h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <label htmlFor="username" className="label p-2">
             <span className="text-base label-text">Username</span>
           </label>
@@ -23,6 +32,10 @@ export default function Login() {
             </svg>
             <input
               id="username"
+              value={userName}
+              onChange={(e) => {
+                setUserName(e.target.value);
+              }}
               type="text"
               className="grow"
               placeholder="Username"
@@ -44,7 +57,15 @@ export default function Login() {
                 clipRule="evenodd"
               />
             </svg>
-            <input type="password" className="grow" placeholder="Password" />
+            <input
+              type="password"
+              value={passwd}
+              onChange={(e) => {
+                setPasswd(e.target.value);
+              }}
+              className="grow"
+              placeholder="Password"
+            />
           </label>
           <strong>
             <Link
@@ -55,7 +76,13 @@ export default function Login() {
             </Link>
           </strong>
           <br />
-          <input type="submit" className="btn btn-outline btn-primary" />
+          <button className="btn btn-outline btn-primary" disabled={loading}>
+            {loading ? (
+              <span className="loading loading-spinner"></span>
+            ) : (
+              "LOGIN"
+            )}
+          </button>
         </form>
       </div>
     </div>
