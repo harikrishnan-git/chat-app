@@ -22,7 +22,7 @@ const useGetMessages = () => {
     };
     if (selectedConversation?._id) getMessage();
   }, [selectedConversation?._id, setMessages]);
-  return { messages, loading };
+  return { messages, loading, selectedConversation };
 };
 
 export default useGetMessages;

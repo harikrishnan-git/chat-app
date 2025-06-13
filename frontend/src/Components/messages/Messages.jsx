@@ -1,10 +1,20 @@
+import { useEffect, useRef } from "react";
 import Message from "./Message";
 import useGetMessages from "../../Hooks/useGetMessages";
 import useConversationStore from "../../zustand/useConversationStore";
+import { set } from "mongoose";
 
 export default function Messages() {
+  const lastMsgRef = useRef(null);
   const { loading } = useGetMessages();
   const messages = useConversationStore((state) => state.messages);
+
+  useEffect(() => {
+    setTimeout(() => {
+      lastMsgRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }, [messages]);
+
   return (
     <div className="flex flex-col flex-1 overflow-auto">
       {loading ? (
@@ -21,7 +31,11 @@ export default function Messages() {
       ) : messages === "No messages found" || messages.length === 0 ? (
         <p className="text-center">Send a message to start conversation</p>
       ) : (
-        messages.map((msg, idx) => <Message msg={msg} key={msg._id} />)
+        messages.map((msg, idx) => (
+          <div ref={lastMsgRef} key={msg._id}>
+            <Message msg={msg} />
+          </div>
+        ))
       )}
     </div>
   );
