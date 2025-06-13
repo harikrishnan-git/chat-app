@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MessageHeader from "./MessageHeader";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import { IoIosSend, IoMdChatbubbles } from "react-icons/io";
+import useConversationStore from "../../zustand/useConversationStore";
 
 export default function MessageContainer() {
-  let NoChat = true;
+  const { selectedConversation, setSelectedConversation } =
+    useConversationStore();
+  useEffect(() => {
+    return () => setSelectedConversation(null);
+  }, [setSelectedConversation]);
   return (
     <div className="md:min-w-[450px] flex flex-col m:h-[450px] md:h-[600px]">
-      {NoChat ? (
+      {!selectedConversation ? (
         <EmptyContiner />
       ) : (
         <>

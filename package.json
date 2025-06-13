@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "server": "nodemon backend/index.js"
+    "start": "concurrently \"npm run server\" \"npm run frontend\"",
+    "server": "nodemon backend/index.js",
+    "frontend": "cd frontend && npm run dev"
   },
   "author": "Harikrishnan",
   "license": "ISC",
@@ -20,6 +22,7 @@
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "nodemon": "^3.1.9"
   }
 }

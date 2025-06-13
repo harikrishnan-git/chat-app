@@ -9,7 +9,10 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Login submitted with:", userName, passwd);
     await login(userName, passwd);
+    setUserName("");
+    setPasswd("");
   };
   return (
     <div className="flex flex-col items-center justify-center min-w-96 nx-auto">
@@ -17,7 +20,7 @@ export default function Login() {
         <h1 className="text-3xl font-semibold text-center text-gray-300">
           LOGIN
         </h1>
-        <form onSubmit={handleSubmit}>
+        <form>
           <label htmlFor="username" className="label p-2">
             <span className="text-base label-text">Username</span>
           </label>
@@ -76,7 +79,11 @@ export default function Login() {
             </Link>
           </strong>
           <br />
-          <button className="btn btn-outline btn-primary" disabled={loading}>
+          <button
+            className="btn btn-outline btn-primary"
+            disabled={loading}
+            onClick={handleSubmit}
+          >
             {loading ? (
               <span className="loading loading-spinner"></span>
             ) : (

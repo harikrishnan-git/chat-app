@@ -9,6 +9,7 @@ export const useLogin = () => {
       toast.error("Fill out all fields");
       return false;
     }
+    return true;
   };
 
   const [loading, setLoading] = useState(false);

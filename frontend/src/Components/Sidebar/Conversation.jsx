@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import useConversationStore from "../../zustand/useConversationStore";
 
 export default function Conversation(data) {
+  const { selectedConversation, setSelectedConversation } =
+    useConversationStore();
+  const isSelected = selectedConversation?._id === data.data._id;
   return (
     <div className="">
-      <div className="flex">
+      <div
+        className={`p-3 flex hover:bg-sky-500 cursor-pointer rounded-lg ${
+          isSelected ? "bg-sky-500" : ""
+        }`}
+        onClick={() => {
+          setSelectedConversation(data.data);
+        }}
+      >
         <div className="avatar online">
           <div className="w-12 rounded-full">
             <img src={data.data.profilePic} />
@@ -18,7 +27,7 @@ export default function Conversation(data) {
           </div>
         </div>
       </div>
-      <div className="divider h-1"></div>
+      <div className="divider m-0 h-1"></div>
     </div>
   );
 }

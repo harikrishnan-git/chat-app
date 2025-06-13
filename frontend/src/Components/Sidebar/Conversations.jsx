@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Conversation from "./Conversation";
-import axios from "axios";
+import useGetConversation from "../../Hooks/useGetConversation";
 
 export default function Conversations() {
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    axios
-      .get("/api/users")
-      .then((res) => {
-        setUsers(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  const { loading, conversations } = useGetConversation();
+  console.log("Conversations data:", conversations);
   return (
     <div className="py-2 flex flex-col overflow-auto sm:h-[270px] md:h-[400px]">
-      {users.map((key, index) => {
-        return <Conversation key={index} data={users[index]} />;
+      {conversations.map((data) => {
+        return <Conversation key={data._id} data={data} />;
       })}
     </div>
   );
