@@ -4,7 +4,6 @@ import useGetConversation from "../../Hooks/useGetConversation";
 
 export default function Conversations() {
   const { loading, conversations } = useGetConversation();
-  console.log("Conversations data:", conversations);
   return (
     <div className="py-2 flex flex-col overflow-auto sm:h-[270px] md:h-[400px]">
       {conversations.map((data) => {

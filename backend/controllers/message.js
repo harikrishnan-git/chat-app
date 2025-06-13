@@ -12,7 +12,7 @@ export const sendMsg = async (req, res) => {
       recieverId,
       message,
     });
-    msg.save();
+    const m = await msg.save();
     const conv = await Conversation.findOne({
       participants: { $all: [senderId, recieverId] },
     });
@@ -29,18 +29,16 @@ export const sendMsg = async (req, res) => {
         .catch((err) => {
           console.log("problem while creating conversation");
         });
-      res.send(con);
-      res.end();
+      res.status(200).send(m);
     } else {
       conv.messages.push(msg._id);
       conv.save().then(() => {
-        res.send(conv);
-        res.end();
+        res.status(200).send(m);
       });
     }
   } catch (err) {
     console.log("error in controller of sendMsg", err.message);
-    res.status(500).json({ error: "error while sending message" });
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -56,7 +54,7 @@ export const getMsg = async (req, res) => {
   } else {
     res.send(
       conv.messages.map((data) => {
-        return data.message;
+        return data;
       })
     );
   }

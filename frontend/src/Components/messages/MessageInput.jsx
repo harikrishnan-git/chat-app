@@ -5,10 +5,9 @@ import useSendMessage from "../../Hooks/useSendMessage";
 export default function MessageInput() {
   const [message, setMessage] = useState("");
   const { sendMessage, loading } = useSendMessage();
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
     if (message.trim() === "") return; // Prevent sending empty messages
-    sendMessage(message);
+    await sendMessage(message);
     setMessage(""); // Clear input after sending
   };
   return (
@@ -25,6 +24,7 @@ export default function MessageInput() {
         <button
           className="btn btn-primary rounded px-2 ml-1"
           onClick={(e) => {
+            e.preventDefault();
             handleSubmit(e);
           }}
           onKeyDown={(e) => {
