@@ -1,9 +1,13 @@
+import { useSocketContext } from "../../Context/SocketContext";
 import useConversationStore from "../../zustand/useConversationStore";
 
 export default function Conversation(data) {
   const { selectedConversation, setSelectedConversation } =
     useConversationStore();
   const isSelected = selectedConversation?._id === data.data._id;
+  const { onlineUsers } = useSocketContext();
+  const isOnline = onlineUsers.includes(data.data._id);
+
   return (
     <div className="">
       <div
@@ -14,7 +18,7 @@ export default function Conversation(data) {
           setSelectedConversation(data.data);
         }}
       >
-        <div className="avatar online">
+        <div className={`avatar ${isOnline ? "online" : ""}`}>
           <div className="w-12 rounded-full">
             <img src={data.data.profilePic} />
           </div>
