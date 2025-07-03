@@ -31,7 +31,7 @@ export default function Signup() {
             <span className="text-base label text">FULL NAME</span>
           </label>
           <label className="w-full h-10 p-2 input-bordered input hover:border-blue-300">
-            <i class="fa-solid fa-circle-user mr-3"></i>
+            <i className="fa-solid fa-circle-user mr-3"></i>
             <input
               id="Fullname"
               type="text"

@@ -25,10 +25,12 @@ export const SocketContextProvider = ({ children }) => {
           userId: authUser._id,
         },
       });
+      console.log("Socket connected:", newSocket.id);
       setSocket(newSocket);
 
-      newSocket.on("getOnlineUsers", (users) => {
+      newSocket.on("onlineUsers", (users) => {
         setOnlineUsers(users);
+        console.log("Online users updated:", users);
       });
 
       return () => newSocket.close();
