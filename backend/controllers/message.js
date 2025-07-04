@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { Message } from "../models/message.model.js";
 import { Conversation } from "../models/communication.model.js";
+import { getReceiverSocketId } from "../socket/socket.js";
+import { io } from "../socket/socket.js";
 
 export const sendMsg = async (req, res) => {
   try {
@@ -29,12 +31,16 @@ export const sendMsg = async (req, res) => {
         .catch((err) => {
           console.log("problem while creating conversation");
         });
-      res.status(200).send(m);
     } else {
       conv.messages.push(msg._id);
-      conv.save().then(() => {
-        res.status(200).send(m);
+      conv.save();
+    }
+    const receiverSocketId = getReceiverSocketId(recieverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", {
+        msg: m, // Send the message object
       });
+      res.status(200).send(m);
     }
   } catch (err) {
     console.log("error in controller of sendMsg", err.message);

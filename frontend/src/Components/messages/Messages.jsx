@@ -2,12 +2,13 @@ import { useEffect, useRef } from "react";
 import Message from "./Message";
 import useGetMessages from "../../Hooks/useGetMessages";
 import useConversationStore from "../../zustand/useConversationStore";
-import { set } from "mongoose";
+import useListenMessage from "../../Hooks/useListenMessage";
 
 export default function Messages() {
   const lastMsgRef = useRef(null);
   const { loading } = useGetMessages();
   const messages = useConversationStore((state) => state.messages);
+  useListenMessage();
 
   useEffect(() => {
     setTimeout(() => {
