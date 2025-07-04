@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run frontend\"",
-    "server": "nodemon backend/index.js",
-    "frontend": "cd frontend && npm run dev"
+    "server": "nodemon index.js"
   },
   "author": "Harikrishnan",
   "license": "ISC",
